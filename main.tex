@@ -1,0 +1,260 @@
+\documentclass[aspectratio=169,mathserif]{beamer}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{kotex}
+\usepackage{pgf}
+\setsanshangulfont[ItalicFont={*},ItalicFeatures={FakeSlant=.22}]{Noto Sans CJK KR}
+\title{유한체에서의 타원곡선과 암호학에서의 응용}
+\author[Sohn]{22학번 손량}
+
+\usetheme{default}
+\setbeamertemplate{itemize items}[circle]
+\setlength\abovecaptionskip{-20pt}
+
+\newcommand{\Fp}{\mathbb{F}_p}
+\newcommand{\Ftwom}{\mathbb{F}_{2^m}}
+
+\begin{document}
+  \begin{frame}
+    \titlepage
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{타원곡선}
+    \framesubtitle{Definition}
+
+    \begin{columns}
+      \column{0.4\textwidth}
+      \begin{figure}
+        \centering
+        \scalebox{0.5}{\input{EC.pgf}}
+      \end{figure}
+      \column{0.6\textwidth}
+      체 \(K\)에 대해, \(\mathrm{char}(K)\not\in\{2,3\}\)이면 \(K\) 위에서 정의된 타원 곡선은 다음 방정식의 해집합.
+      \[y^2 = x^3 + ax + b\]
+      여기서 \(\Delta = -16(4a^3 + 27b^2) \not= 0\)이어야 함.
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{유한체}
+    \framesubtitle{Definition}
+    덧셈과 곱셈 두 개의 이항 연산을 가지는 집합 \(F\)
+    \pause
+    \begin{itemize}
+      \item 이항 연산은 \(F\times F\to F\)여야 함
+      \pause
+      \item \(a+(b+c)=(a+b)+c,\,a\cdot(b\cdot c)=(a\cdot b)\cdot c\) (결합법칙)
+      \item \(a+b=b+a,\,a\cdot b=b\cdot a\) (교환법칙)
+      \item \(a+0=a,\,a\cdot 1=a\)인 \(0, 1\in F\) 존재 (항등원)
+      \item \(a+(-a)=0\)인 \(-a\in F\) 존재 (덧셈의 역원)
+      \item \(a\not=0\)인 모든 \(a\)에 대해, \(a\cdot a^{-1}=1\)인 \(a^{-1}\in F\) 존재 (곱셈의 역원)
+      \item \(a\cdot(b+c)=(a\cdot b)+(a\cdot c)\) (분배법칙)
+    \end{itemize}
+    \pause
+    대표적인 체의 예: 유리수 \(\mathbb{Q}\), 실수 \(\mathbb{R}\)
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{유한체}
+    \framesubtitle{Definition of Field}
+
+    유한체: order(원소의 개수)가 유한한 체
+    \begin{itemize}
+      \item 유한체의 order는 \(q=p^k\) 형태를 가짐
+      \item 유한체의 예: \(\Fp, \Ftwom\) 등
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{유한체}
+    \framesubtitle{유한체 \(\Fp\)}
+
+    \begin{itemize}
+      \item \(\Fp\)는 원소를 나열해 \(\{0,\,1,\,\cdots,\,p-1\}\)으로 나타낼 수 있음
+      \item 덧셈과 곱셈은 직접 곱하거나 더한 결과의 \(p\)로 나눈 나머지를 취한 것으로 정의.
+      \pause
+      \item 예를 들어, \(\mathbb{F}_2\)에서 다음이 성립.
+      \begin{itemize}
+        \item \(1+1=0\)
+        \item \((x+y)^2=x^2+y^2\) (`1학년의 꿈')
+      \end{itemize}
+      \pause
+      \item 덧셈의 역원: \(a+x\equiv 0\;(\mathrm{mod}\:p)\)의 유일한 해로 정의
+      \item 곱셈의 역원: \(a\cdot x\equiv 1\;(\mathrm{mod}\:p)\)의 유일한 해로 정의
+      \pause
+      \item 이 \(\Fp\)에서 타원곡선을 정의할 수 있음
+      \begin{itemize}
+        \item 타원곡선의 형태를 결정하는 매개변수 \(a,\,b\)가 \(\Fp\)에 존재.
+      \end{itemize}
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{유한체}
+    \framesubtitle{\(\mathbb{F}_{71}\)위에서 정의된 타원곡선 \(y^2 = x^3 - x + 2\)}
+
+    \begin{columns}
+      \column{0.4\textwidth}
+      \begin{figure}
+        \raggedleft
+        \scalebox{0.5}{\input{EC.pgf}}
+      \end{figure}
+      \pause
+      \column{0.6\textwidth}
+      \begin{figure}
+        \scalebox{0.5}{\input{EC_on_F71.pgf}}
+      \end{figure}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{유한체}
+    \framesubtitle{유한체 \(\Ftwom\)}
+
+    나중에 시간이 나면 다룰 내용
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{타원곡선에서 정의된 군}
+    \framesubtitle{\(\Fp\)의 경우: \(E(\Fp)\)}
+
+    Point at infinity: \(\mathcal{O}\)
+    \begin{itemize}
+      \item 자기 자신 더하기: \(\mathcal{O} + \mathcal{O} = \mathcal{O}\)
+      \item 다른 점 더하기: \((x,y) + \mathcal{O} = \mathcal{O} + (x,y) = (x,y)\quad\forall (x,y)\in E(\Fp)\)
+    \end{itemize}
+    \pause
+    두 점의 덧셈
+    \begin{itemize}
+      \item 덧셈 역원: \((x,y) + (x,-y) = \mathcal{O}\quad\forall (x,y)\in E(\Fp)\)
+      \item \((x_3,y_3) := (x_1,y_1) + (x_2,y_2)\quad(x_1\not=x_2)\)
+      \pause
+      \begin{itemize}
+        \item \(\lambda := \frac{y_2-y_1}{x_2-x_1}\)
+        \item \(x_3 := \lambda^2 - x_1 - x_2\)
+        \item \(y_3 := \lambda(x_1 - x_3) - y_1\)
+      \end{itemize}
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{타원곡선에서 정의된 군}
+    \framesubtitle{\(\Fp\)의 경우: \(E(\Fp)\)}
+
+    두 점의 덧셈
+    \begin{itemize}
+      \item \((x_3,y_3) := (x_1,y_1) + (x_1,y_1)\)
+      \pause
+      \begin{itemize}
+        \item \(\lambda := \frac{3x_1^2+a}{2y_1}\)
+        \item \(x_3 := \lambda^2 - 2x_1\)
+        \item \(y_3 := \lambda(x_1 - x_3) - y_1\)
+      \end{itemize}
+      \pause
+      \item \(n(x,y)=\underbrace{(x,y) + (x,y) + \dots + (x,y)}_{n\text{개 더함}}\)
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{타원곡선에서 정의된 군}
+    \framesubtitle{\(\Ftwom\)의 경우}
+
+    나중에 시간이 나면 다룰 내용
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{타원곡선에서 정의된 군}
+    \framesubtitle{Double-and-Add Algorithm}
+
+    Elliptic Curve Cryptography에서 \(n\)회 덧셈은 많이 쓰이는데, 여기서 \(n\)은 엄청 클 수 있음.
+    \pause
+    \(O(n)\)인 naive한 알고리즘은 너무 느리고, 실제 구현에서는 \(O(\log_2 n)\) 알고리즘을 사용.
+    \begin{enumerate}
+      \item \(n\in\Fp,\,P\in E(\Fp)\)에 대해, \(nP\)를 \(Q\)에 저장한다고 하자. 초기에 \(Q = \mathcal{O}\).
+      \item \(n\)의 most significant bit부터 시작, least significant bit까지 반복.
+      \pause
+      \begin{enumerate}
+        \item \(2Q\to Q\)
+        \item 지금 보고 있는 비트를 \texttt{b}라고 할 때, \texttt{b == 1}이면 \(Q + P\to Q\)
+      \end{enumerate}
+    \end{enumerate}
+    \pause
+    이 알고리즘을 실제 코드로 구현할 때에는 side-channel attack을 막기 위한 처리가 필요
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{타원곡선의 응용}
+    \framesubtitle{Elliptic Curve Domain Parameters}
+
+    암호화, 복호화를 하기 위한 타원곡선, 유한체의 조건을 미리 정해놓아야 함
+    \[T=(p,a,b,G,n,h)\]
+    \begin{itemize}
+      \item \(p\): 유한체 \(\Fp\)의 order
+      \item \(a, b\): 타원곡선 방정식 \(y^2 = x^3 + ax + b\)의 파라메터
+      \item \(G\): 타원곡선 위의 base point
+      \item \(n\): \(G\)의 order
+      \item \(h\): cofactor \(\#E(\Fp)/n\)
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{타원곡선의 응용}
+    \framesubtitle{ECDH}
+
+    key pair는 무작위로 고른 정수 \(d\in [1,n-1]\)에 대해 \(Q=dG\)를 계산, \((d,Q)\).
+    \begin{itemize}
+      \item 여기서 \(d\)가 비밀키, \(Q\)가 공개키.
+    \end{itemize}
+    \pause
+    Alice, Bob이 각각 key pair \((d_A,Q_A), (d_B,Q_B)\)를 갖고 있다고 하자. 두 사람이 공통의 기밀 정보 \(z\)를 공유하고 싶다고 하자.
+    \begin{enumerate}
+      \item Alice는 Bob에게 \(Q_A\)를, Bob은 Alice에게 \(Q_B\)를 보냄
+      \item Alice는 \(z = d_A Q_B\), Bob은 \(z = d_B Q_A\)를 계산
+    \end{enumerate}
+    \pause
+    \(z = d_A Q_B = d_B Q_A = d_A d_B G\)이므로, Alice와 Bob은 공통의 기밀 정보를 가지게 된다.
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{이산 로그}
+    \framesubtitle{Computational Complexity}
+
+    Alice, Bob의 통신 과정을 Eve가 도청했다고 가정
+    \pause
+    \begin{itemize}
+      \item Eve가 얻은 \(Q_A, Q_B\)를 이용하여 \(z\)를 계산하기 위해서는 \(d_A\) 혹은 \(d_B\)를 계산해야 함
+      \item 이는 이산 로그 문제로, 군의 order \(n\)에 대해 적어도 \(O(\sqrt{n})\)의 시간 복잡도를 가짐
+      \pause
+      \begin{itemize}
+        \item \(O(\sqrt{n})\)보다 효율적인 알고리즘이 있는지는 미해결 문제
+      \end{itemize}
+      \pause
+      \item Eve가 양자 컴퓨터를 가지고 있다면? Shor's Algorithm
+    \end{itemize}
+    \pause
+    양자 컴퓨터의 상용화 이후를 대비하는 post-quantum cryptography로 타원 곡선 사이의 isogeny에 기반한 암호체계가 제안된 바 있음
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{새내기의 발표 들어주셔서 감사합니다!}
+    \framesubtitle{참고 자료 + 참고하면 좋았을... 자료}
+
+    이인석. {\it 대수학}. 서울: 서울대학교출판부, 2008. Print. 학부 대수학 강의; 2.
+    \begin{itemize}
+      \item 체, 군 등 대수적 구조 관련 참고
+    \end{itemize}
+    Certicom Research. {\it SEC 1: Elliptic Curve Cryptography}. Certicom Corp, 2009.
+    \begin{itemize}
+      \item 타원곡선 암호체계의 표준 문서
+    \end{itemize}
+    Beltrametti, Mauro. et. al. {\it Lectures on Curves, Surfaces and Projective Varieties : A Classical View of Algebraic Geometry}. Zürich: European Mathematical Society, 2009. Print. EMS Textbooks in Mathematics.
+    \begin{itemize}
+      \item 도서관에서 빌렸는데 첫페이지 첫단어부터 몰라서 바로 덮었습니다
+    \end{itemize}
+    Luca De Feo. {\it Mathematics of Isogeny Based Cryptography}. arXiv:1711.04062 [cs.CR]
+    \begin{itemize}
+      \item Isogeny based Cryptography까지 설명되어 있는 강의노트. 최근 읽어보는 중입니다.
+    \end{itemize}
+  \end{frame}
+\end{document}
